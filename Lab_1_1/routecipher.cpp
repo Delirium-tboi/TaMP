@@ -36,13 +36,21 @@ int RouteCipher::calculateRows(int textLength) const
     return (textLength + columns - 1) / columns;
 }
 
+void RouteCipher::validateKeyForText(int textLength) const
+{
+    if (columns < textLength) {
+        throw invalid_argument("Error: Key (" + to_string(columns) + 
+                              ") cannot be less than text length (" + 
+                              to_string(textLength) + ")!");
+    }
+}
+
 vector<vector<char>> RouteCipher::createEncryptionTable(const string& text) const
 {
     int rows = calculateRows(text.length());
     vector<vector<char>> table(rows, vector<char>(columns, ' '));
     int index = 0;
     
-    // Запись для шифрования: по горизонтали слева направо, сверху вниз
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
             if (index < text.length()) {
@@ -76,7 +84,6 @@ string RouteCipher::readHorizontal(const vector<vector<char>>& table) const
     string result;
     int rows = table.size();
     
-    // Чтение по горизонтали слева направо, сверху вниз
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
             if (table[i][j] != ' ') {
@@ -93,7 +100,6 @@ string RouteCipher::readVerticalReverse(const vector<vector<char>>& table) const
     string result;
     int rows = table.size();
     
-    // Чтение сверху вниз, справа налево
     for (int j = columns - 1; j >= 0; j--) {
         for (int i = 0; i < rows; i++) {
             if (table[i][j] != ' ') {
@@ -108,7 +114,7 @@ string RouteCipher::readVerticalReverse(const vector<vector<char>>& table) const
 string RouteCipher::encrypt(const string& plainText)
 {
     if (plainText.empty()) {
-        return "";
+        throw invalid_argument("Error: Text cannot be empty!");
     }
     
     string normalized = normalizeText(plainText);
@@ -116,25 +122,16 @@ string RouteCipher::encrypt(const string& plainText)
         throw invalid_argument("Error: Text must contain only English letters!");
     }
     
-    int rows = calculateRows(normalized.length());
+    validateKeyForText(normalized.length());
+    
     auto table = createEncryptionTable(normalized);
-    
-    // Отладочный вывод
-    cout << "Encryption table (" << rows << "x" << columns << "):" << endl;
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < columns; j++) {
-            cout << (table[i][j] == ' ' ? '.' : table[i][j]) << " ";
-        }
-        cout << endl;
-    }
-    
     return readVerticalReverse(table);
 }
 
 string RouteCipher::decrypt(const string& cipherText)
 {
     if (cipherText.empty()) {
-        return "";
+        throw invalid_argument("Error: Text cannot be empty!");
     }
     
     string normalized = normalizeText(cipherText);
@@ -142,17 +139,8 @@ string RouteCipher::decrypt(const string& cipherText)
         throw invalid_argument("Error: Text must contain only English letters!");
     }
     
-    int rows = calculateRows(normalized.length());
+    validateKeyForText(normalized.length());
+    
     auto table = createDecryptionTable(normalized);
-    
-    // Отладочный вывод
-    cout << "Decryption table (" << rows << "x" << columns << "):" << endl;
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < columns; j++) {
-            cout << (table[i][j] == ' ' ? '.' : table[i][j]) << " ";
-        }
-        cout << endl;
-    }
-    
     return readHorizontal(table);
 }
