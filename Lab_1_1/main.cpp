@@ -6,14 +6,12 @@
 
 using namespace std;
 
-// Функция для очистки буфера ввода
 void clearInputBuffer()
 {
     cin.clear();
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
-// Функция для получения ключа от пользователя
 int getKeyFromUser()
 {
     int key;
@@ -31,7 +29,6 @@ int getKeyFromUser()
     }
 }
 
-// Функция для получения текста от пользователя
 string getTextFromUser(const string& prompt)
 {
     string text;
@@ -40,10 +37,9 @@ string getTextFromUser(const string& prompt)
     return text;
 }
 
-// Функция для отображения меню
-void showMenu()
+void showMenu(int currentKey)
 {
-    cout << "\n=== MENU ===" << endl;
+    cout << "\n=== MENU (Current key: " << currentKey << ") ===" << endl;
     cout << "1 - Encrypt text" << endl;
     cout << "2 - Decrypt text" << endl;
     cout << "3 - Change key" << endl;
@@ -51,7 +47,6 @@ void showMenu()
     cout << "Select operation: ";
 }
 
-// Основная функция программы
 int main()
 {
     setlocale(LC_ALL, "en_US.UTF-8");
@@ -60,15 +55,14 @@ int main()
     cout << "Write route: horizontally left to right, top to bottom" << endl;
     cout << "Read route: top to bottom, right to left" << endl;
     cout << "Only English letters are processed (A-Z, a-z)" << endl;
+    cout << "Key must be >= text length" << endl;
     
-    // Установка ключа
     int key = getKeyFromUser();
     RouteCipher cipher(key);
-    cout << "Key set: " << key << " columns" << endl;
     
     int choice;
     do {
-        showMenu();
+        showMenu(cipher.getKey());
         cin >> choice;
         clearInputBuffer();
         
@@ -81,12 +75,11 @@ int main()
                 }
                 
                 try {
-                    string encrypted = cipher.encrypt(text);
                     cout << "Original text: " << text << endl;
+                    string encrypted = cipher.encrypt(text);
                     cout << "Encrypted text: " << encrypted << endl;
                 } catch (const exception& e) {
-                    cout << e.what() << endl;
-                    cout << "Please use only English letters (A-Z, a-z)" << endl;
+                    cout << "Encryption error: " << e.what() << endl;
                 }
                 break;
             }
@@ -99,12 +92,11 @@ int main()
                 }
                 
                 try {
-                    string decrypted = cipher.decrypt(text);
                     cout << "Encrypted text: " << text << endl;
+                    string decrypted = cipher.decrypt(text);
                     cout << "Decrypted text: " << decrypted << endl;
                 } catch (const exception& e) {
-                    cout << e.what() << endl;
-                    cout << "Please use only English letters (A-Z, a-z)" << endl;
+                    cout << "Decryption error: " << e.what() << endl;
                 }
                 break;
             }
@@ -112,7 +104,7 @@ int main()
             case 3: {
                 key = getKeyFromUser();
                 cipher = RouteCipher(key);
-                cout << "Key changed: " << key << " columns" << endl;
+                cout << "Key changed to: " << key << " columns" << endl;
                 break;
             }
                 
