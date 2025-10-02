@@ -55,7 +55,7 @@ int main()
     cout << "Write route: horizontally left to right, top to bottom" << endl;
     cout << "Read route: top to bottom, right to left" << endl;
     cout << "Only English letters are processed (A-Z, a-z)" << endl;
-    cout << "Key must be >= text length" << endl;
+    cout << "Key can be any positive integer" << endl; // Изменено сообщение
     
     int key = getKeyFromUser();
     RouteCipher cipher(key);

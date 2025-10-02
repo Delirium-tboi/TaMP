@@ -36,19 +36,10 @@ int RouteCipher::calculateRows(int textLength) const
     return (textLength + columns - 1) / columns;
 }
 
-void RouteCipher::validateKeyForText(int textLength) const
-{
-    if (columns < textLength) {
-        throw invalid_argument("Error: Key (" + to_string(columns) + 
-                              ") cannot be less than text length (" + 
-                              to_string(textLength) + ")!");
-    }
-}
-
 vector<vector<char>> RouteCipher::createEncryptionTable(const string& text) const
 {
     int rows = calculateRows(text.length());
-    vector<vector<char>> table(rows, vector<char>(columns, ' '));
+    vector<vector<char>> table(rows, vector<char>(columns, 'X'));
     int index = 0;
     
     for (int i = 0; i < rows; i++) {
@@ -65,13 +56,20 @@ vector<vector<char>> RouteCipher::createEncryptionTable(const string& text) cons
 vector<vector<char>> RouteCipher::createDecryptionTable(const string& text) const
 {
     int rows = calculateRows(text.length());
+    int totalCells = rows * columns;
+    
+    string paddedText = text;
+    if (paddedText.length() < totalCells) {
+        paddedText += string(totalCells - paddedText.length(), 'X');
+    }
+    
     vector<vector<char>> table(rows, vector<char>(columns, ' '));
     int index = 0;
     
     for (int j = columns - 1; j >= 0; j--) {
         for (int i = 0; i < rows; i++) {
-            if (index < text.length()) {
-                table[i][j] = text[index++];
+            if (index < paddedText.length()) {
+                table[i][j] = paddedText[index++];
             }
         }
     }
@@ -84,9 +82,10 @@ string RouteCipher::readHorizontal(const vector<vector<char>>& table) const
     string result;
     int rows = table.size();
     
+    // Читаем построчно, но пропускаем 'X'
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
-            if (table[i][j] != ' ') {
+            if (table[i][j] != 'X') {
                 result += table[i][j];
             }
         }
@@ -100,11 +99,10 @@ string RouteCipher::readVerticalReverse(const vector<vector<char>>& table) const
     string result;
     int rows = table.size();
     
+    // Читаем по столбцам справа налево ВСЕ символы (включая 'X')
     for (int j = columns - 1; j >= 0; j--) {
         for (int i = 0; i < rows; i++) {
-            if (table[i][j] != ' ') {
-                result += table[i][j];
-            }
+            result += table[i][j];
         }
     }
     
@@ -122,8 +120,6 @@ string RouteCipher::encrypt(const string& plainText)
         throw invalid_argument("Error: Text must contain only English letters!");
     }
     
-    validateKeyForText(normalized.length());
-    
     auto table = createEncryptionTable(normalized);
     return readVerticalReverse(table);
 }
@@ -138,8 +134,6 @@ string RouteCipher::decrypt(const string& cipherText)
     if (normalized.empty()) {
         throw invalid_argument("Error: Text must contain only English letters!");
     }
-    
-    validateKeyForText(normalized.length());
     
     auto table = createDecryptionTable(normalized);
     return readHorizontal(table);
