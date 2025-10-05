@@ -55,7 +55,7 @@ void check(const string& text, const string& key, bool destructCipherText = fals
 int main()
 {
     setlocale(LC_ALL, "ru_RU.UTF-8");
-    
+        
     // Тестирование с обработкой исключений
     cout << "=== Тестирование обработки исключений ===" << endl;
     check("ПРИВЕТ", "ЭХО");                    // Корректные данные
@@ -73,7 +73,8 @@ int main()
     unsigned op;
     
     cout << "Шифр готов. Введите ключ: ";
-    cin >> key_input;
+    getline(cin, key_input);
+    
     
     try {
         wstring key = to_wide(key_input);

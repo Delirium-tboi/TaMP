@@ -5,6 +5,7 @@
 #include <locale>
 #include <codecvt>
 #include <stdexcept>
+#include <iostream>
 
 // Класс исключения для ошибок шифрования
 class cipher_error : public std::invalid_argument {
