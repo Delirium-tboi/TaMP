@@ -11,6 +11,7 @@ private:
     
     bool isValidChar(char c) const;
     std::string normalizeText(const std::string& text) const;
+    std::string prepareCipherText(const std::string& text) const;
     int calculateRows(int textLength) const;
     void validateKeyForText(int textLength) const;
     std::vector<std::vector<char>> createEncryptionTable(const std::string& text) const;
