@@ -8,6 +8,8 @@
 
 using namespace std;
 
+const char FILL_CHAR = '=';
+
 RouteCipher::RouteCipher(int key) : columns(key) 
 {
     if (key <= 0) {
@@ -31,6 +33,18 @@ string RouteCipher::normalizeText(const string& text) const
     return result;
 }
 
+string RouteCipher::prepareCipherText(const string& text) const
+{
+    string result;
+    for (char c : text) {
+        // Сохраняем все буквы и символ заполнителя
+        if (isValidChar(c) || c == FILL_CHAR) {
+            result += (c == FILL_CHAR) ? FILL_CHAR : toupper(c);
+        }
+    }
+    return result;
+}
+
 int RouteCipher::calculateRows(int textLength) const
 {
     return (textLength + columns - 1) / columns;
@@ -48,7 +62,7 @@ void RouteCipher::validateKeyForText(int textLength) const
 vector<vector<char>> RouteCipher::createEncryptionTable(const string& text) const
 {
     int rows = calculateRows(text.length());
-    vector<vector<char>> table(rows, vector<char>(columns, 'X')); // Заполняем X по умолчанию
+    vector<vector<char>> table(rows, vector<char>(columns, FILL_CHAR));
     int index = 0;
     
     for (int i = 0; i < rows; i++) {
@@ -56,7 +70,6 @@ vector<vector<char>> RouteCipher::createEncryptionTable(const string& text) cons
             if (index < text.length()) {
                 table[i][j] = text[index++];
             }
-            // Остальные ячейки остаются 'X'
         }
     }
     
@@ -68,10 +81,10 @@ vector<vector<char>> RouteCipher::createDecryptionTable(const string& text) cons
     int rows = calculateRows(text.length());
     int totalCells = rows * columns;
     
-    // Дополняем текст до полной таблицы символами 'X'
+    // Дополняем текст до полной таблицы символами FILL_CHAR
     string paddedText = text;
     if (paddedText.length() < totalCells) {
-        paddedText += string(totalCells - paddedText.length(), 'X');
+        paddedText += string(totalCells - paddedText.length(), FILL_CHAR);
     }
     
     vector<vector<char>> table(rows, vector<char>(columns, ' '));
@@ -93,12 +106,10 @@ string RouteCipher::readHorizontal(const vector<vector<char>>& table) const
     string result;
     int rows = table.size();
     
-    // Читаем построчно, но пропускаем 'X'
+    // Читаем построчно все символы (и буквы и заполнители)
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
-            if (table[i][j] != 'X') {  // Пропускаем X
-                result += table[i][j];
-            }
+            result += table[i][j];
         }
     }
     
@@ -110,7 +121,7 @@ string RouteCipher::readVerticalReverse(const vector<vector<char>>& table) const
     string result;
     int rows = table.size();
     
-    // Читаем по столбцам справа налево ВСЕ символы (включая 'X')
+    // Читаем по столбцам справа налево все символы
     for (int j = columns - 1; j >= 0; j--) {
         for (int i = 0; i < rows; i++) {
             result += table[i][j];
@@ -119,7 +130,6 @@ string RouteCipher::readVerticalReverse(const vector<vector<char>>& table) const
     
     return result;
 }
-
 string RouteCipher::encrypt(const string& plainText)
 {
     if (plainText.empty()) {
@@ -134,6 +144,7 @@ string RouteCipher::encrypt(const string& plainText)
     validateKeyForText(normalized.length());
     
     auto table = createEncryptionTable(normalized);
+    // Зашифрованный текст содержит заполнители = (они нужны для расшифровки)
     return readVerticalReverse(table);
 }
 
@@ -143,13 +154,27 @@ string RouteCipher::decrypt(const string& cipherText)
         throw cipher_error("Text cannot be empty!");
     }
     
-    string normalized = normalizeText(cipherText);
-    if (normalized.empty()) {
+    // Для дешифровки используем prepareCipherText, которая сохраняет '='
+    string prepared = prepareCipherText(cipherText);
+    if (prepared.empty()) {
         throw cipher_error("The text should contain only English letters!");
     }
     
-    validateKeyForText(normalized.length());
+    validateKeyForText(prepared.length());
     
-    auto table = createDecryptionTable(normalized);
-    return readHorizontal(table);
+    // Создаем таблицу с символами '='
+    auto table = createDecryptionTable(prepared);
+    
+    // Читаем таблицу (включая '=')
+    string decryptedWithFillers = readHorizontal(table);
+    
+    // Удаляем заполнители из конечного расшифрованного текста
+    string finalResult;
+    for (char c : decryptedWithFillers) {
+        if (c != FILL_CHAR) {
+            finalResult += c;
+        }
+    }
+    
+    return finalResult;
 }
