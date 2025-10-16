@@ -7,10 +7,11 @@
 
 using namespace std;
 
-// проверка, чтобы строка состояла только из русских букв
+// проверка, чтобы строка состояла только из русских букв (пробелы теперь разрешены, но будут удаляться)
 bool isValid(const wstring& s)
 {
     for(auto c : s) {
+        if (c == L' ') continue; // пропускаем пробелы
         if(!iswalpha(c) || !iswupper(c)) {
             return false;
         }
@@ -21,6 +22,17 @@ bool isValid(const wstring& s)
         }
     }
     return true;
+}
+
+// Функция для удаления пробелов из строки
+wstring removeSpaces(const wstring& s) {
+    wstring result;
+    for(auto c : s) {
+        if(c != L' ') {
+            result.push_back(c);
+        }
+    }
+    return result;
 }
 
 // Функция для преобразования string в wstring
@@ -65,10 +77,14 @@ int main()
             cout << "Неверная операция\n";
         } else if(op > 0) {
             cout << "Введите текст: ";
-            cin >> text_input;
+            cin.ignore(); // очистить буфер
+            getline(cin, text_input); // читаем всю строку
             
             wstring text = to_wide(text_input);
             transform(text.begin(), text.end(), text.begin(), ::towupper);
+            
+            // Удаляем пробелы из текста
+            text = removeSpaces(text);
             
             if(isValid(text)) {
                 if(op == 1) {
