@@ -1,143 +1,123 @@
-#include "routecipher.h"
 #include <iostream>
-#include <string>
-#include <limits>
 #include <locale>
-
+#include <codecvt>
+#include <algorithm>
+#include <cwctype>
+#include <limits>
+#include <string>
+#include "routecipher.h"
 using namespace std;
 
-void clearInputBuffer()
+bool onlyCyrillic(const wstring& s)
 {
-    cin.clear();
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-}
-
-int getKeyFromUser()
-{
-    int key;
-    while (true) {
-        cout << "Enter encryption key (number of columns > 0): ";
-        cin >> key;
-        
-        if (cin.fail() || key <= 0) {
-            cout << "Error: Key must be a positive integer!" << endl;
-            clearInputBuffer();
-        } else {
-            clearInputBuffer();
-            return key;
-        }
+    wstring ABC = L"АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+    for (auto ch : s) {
+        if (iswspace(ch)) continue;
+        if (ABC.find(ch) == wstring::npos) return false;
     }
+    return true;
 }
 
-string getTextFromUser(const string& prompt)
+wstring toUpperCyr(const wstring& s)
 {
-    string text;
-    cout << prompt;
-    getline(cin, text);
-    return text;
+    wstring res = s;
+    wstring lower = L"абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+    wstring upper = L"АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
+    for (auto& c : res) {
+        size_t pos = lower.find(c);
+        if (pos != wstring::npos) c = upper[pos];
+    }
+    return res;
 }
 
-void showMenu(int currentKey)
+wstring stripSpaces(const wstring& s)
 {
-    cout << "\n=== MENU (Current key: " << currentKey << ") ===" << endl;
-    cout << "1 - Encrypt text" << endl;
-    cout << "2 - Decrypt text" << endl;
-    cout << "3 - Change key" << endl;
-    cout << "0 - Exit" << endl;
-    cout << "Select operation: ";
+    wstring out;
+    out.reserve(s.size());
+    for (wchar_t ch : s)
+        if (!iswspace(ch))
+            out.push_back(ch);
+    return out;
+}
+
+wstring str8_to_w(const string& s)
+{
+    wstring_convert<codecvt_utf8<wchar_t>> conv;
+    return conv.from_bytes(s);
+}
+
+string w_to_str8(const wstring& ws)
+{
+    wstring_convert<codecvt_utf8<wchar_t>> conv;
+    return conv.to_bytes(ws);
 }
 
 int main()
 {
-    setlocale(LC_ALL, "en_US.UTF-8");
-    
-    cout << "=== TABLE ROUTE TRANSPOSITION CIPHER ===" << endl;
-    cout << "Write route: horizontally left to right, top to bottom" << endl;
-    cout << "Read route: top to bottom, right to left" << endl;
-    cout << "Only English letters are processed (A-Z, a-z)" << endl;
-    cout << "Key must be <= text length" << endl;
-    
-    int key;
-    RouteCipher* cipher = nullptr;
-    
-    // Инициализация шифра с обработкой исключений
-    while (true) {
-        try {
-            key = getKeyFromUser();
-            cipher = new RouteCipher(key);
-            break;
-        } catch (const cipher_error& e) {
-            cout << "Key error: " << e.what() << endl;
-        }
+    setlocale(LC_ALL, "ru_RU.UTF-8");
+
+    string keyLine;
+    string msgLine;
+    unsigned action;
+
+    cout << "Введите число столбцов: ";
+    getline(cin, keyLine);
+
+    int cols = 0;
+    try {
+        cols = stoi(keyLine);
+    } catch (...) {
+        cerr << "Некорректное число столбцов." << endl;
+        return 1;
     }
     
-    int choice;
-    do {
-        showMenu(cipher->getKey());
-        cin >> choice;
-        clearInputBuffer();
-        
-        switch (choice) {
-            case 1: {
-                string text = getTextFromUser("Enter text to encrypt: ");
-                if (text.empty()) {
-                    cout << "Text cannot be empty!" << endl;
-                    break;
-                }
-                
-                try {
-                    cout << "Original text: " << text << endl;
-                    string encrypted = cipher->encrypt(text);
-                    cout << "Encrypted text: " << encrypted << endl;
-                } catch (const cipher_error& e) {
-                    cout << "Encryption error: " << e.what() << endl;
-                }
-                break;
+    try {
+        Table cipher(cols);
+        cout << "Режимы: 1 — шифрование, 2 — расшифровка, 0 — выход." << endl;
+
+        do {
+            cout << "Выберите режим (0 — выход, 1 — шифрование, 2 — расшифровка): ";
+            if (!(cin >> action)) {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                continue;
             }
-                
-            case 2: {
-                string text = getTextFromUser("Enter text to decrypt: ");
-                if (text.empty()) {
-                    cout << "Text cannot be empty!" << endl;
-                    break;
-                }
-                
-                try {
-                    cout << "Encrypted text: " << text << endl;
-                    string decrypted = cipher->decrypt(text);
-                    cout << "Decrypted text: " << decrypted << endl;
-                } catch (const cipher_error& e) {
-                    cout << "Decryption error: " << e.what() << endl;
-                }
-                break;
-            }
-                
-            case 3: {
-                while (true) {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+            if (action > 2) {
+                cout << "Неверный выбор режима." << endl;
+            } else if (action > 0) {
+                cout << "Введите строку: ";
+                getline(cin, msgLine);
+
+                wstring msgW = str8_to_w(msgLine);
+                wstring clean = stripSpaces(msgW);
+
+                if (onlyCyrillic(clean)) {
                     try {
-                        key = getKeyFromUser();
-                        delete cipher;
-                        cipher = new RouteCipher(key);
-                        cout << "Key changed to: " << key << " columns" << endl;
-                        break;
-                    } catch (const cipher_error& e) {
-                        cout << "Key error: " << e.what() << endl;
+                        if (action == 1) {
+                            // ШИФРОВАНИЕ: преобразуем в верхний регистр перед шифрованием
+                            clean = toUpperCyr(clean);
+                            wstring enc = cipher.encrypt(clean);
+                            cout << "Зашифровано: " << w_to_str8(enc) << endl;
+                        } else {
+                            // РАСШИФРОВКА: оставляем оригинальный регистр для ввода
+                            wstring dec = cipher.decrypt(clean);
+                            cout << "Расшифровано: " << w_to_str8(dec) << endl;
+                        }
+                    } catch (const CipherException& e) {
+                        cerr << "Ошибка шифрования: " << e.what() << endl;
                     }
+                } else {
+                    cout << "Можно использовать только кириллицу." << endl;
                 }
-                break;
             }
-                
-            case 0:
-                cout << "Exiting program..." << endl;
-                break;
-                
-            default:
-                cout << "Invalid operation! Please try again." << endl;
-                break;
-                }
+        } while (action != 0);
         
-    } while (choice != 0);
-    
-    delete cipher;
+    } catch (const CipherException& e) {
+        cerr << "Ошибка создания шифратора: " << e.what() << endl;
+        return 1;
+    }
+
     return 0;
 }
