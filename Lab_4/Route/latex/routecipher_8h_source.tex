@@ -1,0 +1,36 @@
+\hypertarget{routecipher_8h_source}{}\doxysection{routecipher.\+h}
+\mbox{\hyperlink{routecipher_8h}{См. документацию.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#pragma once}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <stdexcept>}}
+\DoxyCodeLine{15 \textcolor{keyword}{using namespace }std;}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{21 \textcolor{keyword}{class }\mbox{\hyperlink{classCipherException}{CipherException}} : \textcolor{keyword}{public} exception}
+\DoxyCodeLine{22 \{}
+\DoxyCodeLine{23 \textcolor{keyword}{private}:}
+\DoxyCodeLine{24     \textcolor{keywordtype}{string} message; }
+\DoxyCodeLine{25 \textcolor{keyword}{public}:}
+\DoxyCodeLine{30     \textcolor{keyword}{explicit} \mbox{\hyperlink{classCipherException_a5467396312aca79874cb0b501186a499}{CipherException}}(\textcolor{keyword}{const} \textcolor{keywordtype}{string}\& msg) : message(msg) \{\}}
+\DoxyCodeLine{31     }
+\DoxyCodeLine{36     \textcolor{keyword}{const} \textcolor{keywordtype}{char}* \mbox{\hyperlink{classCipherException_af50f30579a8602d35824d1a2b946a184}{what}}() const noexcept\textcolor{keyword}{ override }\{}
+\DoxyCodeLine{37         \textcolor{keywordflow}{return} message.c\_str();}
+\DoxyCodeLine{38     \}}
+\DoxyCodeLine{39 \};}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{47 \textcolor{keyword}{class }\mbox{\hyperlink{classTable}{Table}}}
+\DoxyCodeLine{48 \{}
+\DoxyCodeLine{49 \textcolor{keyword}{private}:}
+\DoxyCodeLine{50     \textcolor{keywordtype}{int} cols; }
+\DoxyCodeLine{51     }
+\DoxyCodeLine{52 \textcolor{keyword}{public}:}
+\DoxyCodeLine{58     \textcolor{keyword}{explicit} \mbox{\hyperlink{classTable_a4cd90c67c976b6b5d6c96a7ffbfc563f}{Table}}(\textcolor{keywordtype}{int} key);}
+\DoxyCodeLine{59     }
+\DoxyCodeLine{66     wstring \mbox{\hyperlink{classTable_a83ccfae4376b54eff71df87757bb16e6}{encrypt}}(\textcolor{keyword}{const} wstring\& plain);}
+\DoxyCodeLine{67     }
+\DoxyCodeLine{74     wstring \mbox{\hyperlink{classTable_a39e90edb353837e30bcf77d09df3a03a}{decrypt}}(\textcolor{keyword}{const} wstring\& cipher);}
+\DoxyCodeLine{75 \};}
+
+\end{DoxyCode}

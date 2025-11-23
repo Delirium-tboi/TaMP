@@ -1,0 +1,158 @@
+\hypertarget{mainM_8cpp}{}\doxysection{Файл main\+M.\+cpp}
+\label{mainM_8cpp}\index{mainM.cpp@{mainM.cpp}}
+
+
+Главный модуль для тестирования шифра табличной маршрутной перестановки  
+
+
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$locale$>$}\newline
+{\ttfamily \#include $<$codecvt$>$}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include $<$cwctype$>$}\newline
+{\ttfamily \#include $<$limits$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include \char`\"{}routecipher.\+h\char`\"{}}\newline
+Граф включаемых заголовочных файлов для main\+M.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{mainM_8cpp__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Функции}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{mainM_8cpp_ae0a132fead863af3e4671531c5a7fb0a}{only\+Cyrillic}} (const wstring \&s)
+\begin{DoxyCompactList}\small\item\em Проверка строки на содержание только кириллических символов \end{DoxyCompactList}\item 
+wstring \mbox{\hyperlink{mainM_8cpp_a489de62730890d9a98d0e68bbcb4edca}{to\+Upper\+Cyr}} (const wstring \&s)
+\begin{DoxyCompactList}\small\item\em Преобразование строки в верхний регистр для кириллицы \end{DoxyCompactList}\item 
+wstring \mbox{\hyperlink{mainM_8cpp_a945d5d69ad024b8adfa87c12de7d565e}{strip\+Spaces}} (const wstring \&s)
+\begin{DoxyCompactList}\small\item\em Удаление пробелов из строки \end{DoxyCompactList}\item 
+wstring \mbox{\hyperlink{mainM_8cpp_ae4523e6a824b26c927c85719b430c3d2}{str8\+\_\+to\+\_\+w}} (const string \&s)
+\begin{DoxyCompactList}\small\item\em Преобразование string в wstring. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{mainM_8cpp_a3bd7446697f8822ef50d84e4ff6d1842}{w\+\_\+to\+\_\+str8}} (const wstring \&ws)
+\begin{DoxyCompactList}\small\item\em Преобразование wstring в string. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{mainM_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main}} ()
+\begin{DoxyCompactList}\small\item\em Главная функция программы для шифра табличной перестановки \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Подробное описание}
+Главный модуль для тестирования шифра табличной маршрутной перестановки 
+
+\begin{DoxyAuthor}{Автор}
+Семин Александр 24ПТв2 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Версия}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Дата}
+2025
+\end{DoxyDate}
+Содержит пользовательский интерфейс для работы с шифром табличной перестановки 
+
+\doxysubsection{Функции}
+\mbox{\Hypertarget{mainM_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{mainM_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
+\index{mainM.cpp@{mainM.cpp}!main@{main}}
+\index{main@{main}!mainM.cpp@{mainM.cpp}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Главная функция программы для шифра табличной перестановки 
+
+\begin{DoxyReturn}{Возвращает}
+код завершения программы 
+\end{DoxyReturn}
+\mbox{\Hypertarget{mainM_8cpp_ae0a132fead863af3e4671531c5a7fb0a}\label{mainM_8cpp_ae0a132fead863af3e4671531c5a7fb0a}} 
+\index{mainM.cpp@{mainM.cpp}!onlyCyrillic@{onlyCyrillic}}
+\index{onlyCyrillic@{onlyCyrillic}!mainM.cpp@{mainM.cpp}}
+\doxysubsubsection{\texorpdfstring{onlyCyrillic()}{onlyCyrillic()}}
+{\footnotesize\ttfamily bool only\+Cyrillic (\begin{DoxyParamCaption}\item[{const wstring \&}]{s }\end{DoxyParamCaption})}
+
+
+
+Проверка строки на содержание только кириллических символов 
+
+
+\begin{DoxyParams}{Аргументы}
+{\em s} & строка для проверки \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Возвращает}
+true если строка содержит только кириллические символы и пробелы 
+\end{DoxyReturn}
+\mbox{\Hypertarget{mainM_8cpp_ae4523e6a824b26c927c85719b430c3d2}\label{mainM_8cpp_ae4523e6a824b26c927c85719b430c3d2}} 
+\index{mainM.cpp@{mainM.cpp}!str8\_to\_w@{str8\_to\_w}}
+\index{str8\_to\_w@{str8\_to\_w}!mainM.cpp@{mainM.cpp}}
+\doxysubsubsection{\texorpdfstring{str8\_to\_w()}{str8\_to\_w()}}
+{\footnotesize\ttfamily wstring str8\+\_\+to\+\_\+w (\begin{DoxyParamCaption}\item[{const string \&}]{s }\end{DoxyParamCaption})}
+
+
+
+Преобразование string в wstring. 
+
+
+\begin{DoxyParams}{Аргументы}
+{\em s} & строка в узком формате \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Возвращает}
+строка в широком формате 
+\end{DoxyReturn}
+\mbox{\Hypertarget{mainM_8cpp_a945d5d69ad024b8adfa87c12de7d565e}\label{mainM_8cpp_a945d5d69ad024b8adfa87c12de7d565e}} 
+\index{mainM.cpp@{mainM.cpp}!stripSpaces@{stripSpaces}}
+\index{stripSpaces@{stripSpaces}!mainM.cpp@{mainM.cpp}}
+\doxysubsubsection{\texorpdfstring{stripSpaces()}{stripSpaces()}}
+{\footnotesize\ttfamily wstring strip\+Spaces (\begin{DoxyParamCaption}\item[{const wstring \&}]{s }\end{DoxyParamCaption})}
+
+
+
+Удаление пробелов из строки 
+
+
+\begin{DoxyParams}{Аргументы}
+{\em s} & исходная строка \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Возвращает}
+строка без пробелов 
+\end{DoxyReturn}
+\mbox{\Hypertarget{mainM_8cpp_a489de62730890d9a98d0e68bbcb4edca}\label{mainM_8cpp_a489de62730890d9a98d0e68bbcb4edca}} 
+\index{mainM.cpp@{mainM.cpp}!toUpperCyr@{toUpperCyr}}
+\index{toUpperCyr@{toUpperCyr}!mainM.cpp@{mainM.cpp}}
+\doxysubsubsection{\texorpdfstring{toUpperCyr()}{toUpperCyr()}}
+{\footnotesize\ttfamily wstring to\+Upper\+Cyr (\begin{DoxyParamCaption}\item[{const wstring \&}]{s }\end{DoxyParamCaption})}
+
+
+
+Преобразование строки в верхний регистр для кириллицы 
+
+
+\begin{DoxyParams}{Аргументы}
+{\em s} & исходная строка \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Возвращает}
+строка в верхнем регистре 
+\end{DoxyReturn}
+\mbox{\Hypertarget{mainM_8cpp_a3bd7446697f8822ef50d84e4ff6d1842}\label{mainM_8cpp_a3bd7446697f8822ef50d84e4ff6d1842}} 
+\index{mainM.cpp@{mainM.cpp}!w\_to\_str8@{w\_to\_str8}}
+\index{w\_to\_str8@{w\_to\_str8}!mainM.cpp@{mainM.cpp}}
+\doxysubsubsection{\texorpdfstring{w\_to\_str8()}{w\_to\_str8()}}
+{\footnotesize\ttfamily string w\+\_\+to\+\_\+str8 (\begin{DoxyParamCaption}\item[{const wstring \&}]{ws }\end{DoxyParamCaption})}
+
+
+
+Преобразование wstring в string. 
+
+
+\begin{DoxyParams}{Аргументы}
+{\em ws} & строка в широком формате \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Возвращает}
+строка в узком формате 
+\end{DoxyReturn}

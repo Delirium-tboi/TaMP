@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.4"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Gronsfeld: Исходный файл routecipher.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Gronsfeld<span id="projectnumber">&#160;1.0</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.9.4 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search",'Поиск','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Поиск');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">routecipher.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="routecipher_8h.html">См. документацию.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">using namespace </span>std;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="classCipherException.html">   21</a></span><span class="keyword">class </span><a class="code hl_class" href="classCipherException.html">CipherException</a> : <span class="keyword">public</span> exception</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>{</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keywordtype">string</span> message; </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classCipherException.html#a5467396312aca79874cb0b501186a499">   30</a></span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classCipherException.html#a5467396312aca79874cb0b501186a499">CipherException</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; msg) : message(msg) {}</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="classCipherException.html#af50f30579a8602d35824d1a2b946a184">   36</a></span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="classCipherException.html#af50f30579a8602d35824d1a2b946a184">what</a>() const noexcept<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        <span class="keywordflow">return</span> message.c_str();</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    }</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>};</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="classTable.html">   47</a></span><span class="keyword">class </span><a class="code hl_class" href="classTable.html">Table</a></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>{</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordtype">int</span> cols; </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="classTable.html#a4cd90c67c976b6b5d6c96a7ffbfc563f">   58</a></span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classTable.html#a4cd90c67c976b6b5d6c96a7ffbfc563f">Table</a>(<span class="keywordtype">int</span> key);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="classTable.html#a83ccfae4376b54eff71df87757bb16e6">   66</a></span>    wstring <a class="code hl_function" href="classTable.html#a83ccfae4376b54eff71df87757bb16e6">encrypt</a>(<span class="keyword">const</span> wstring&amp; plain);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="classTable.html#a39e90edb353837e30bcf77d09df3a03a">   74</a></span>    wstring <a class="code hl_function" href="classTable.html#a39e90edb353837e30bcf77d09df3a03a">decrypt</a>(<span class="keyword">const</span> wstring&amp; cipher);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>};</div>
+<div class="ttc" id="aclassCipherException_html"><div class="ttname"><a href="classCipherException.html">CipherException</a></div><div class="ttdoc">Класс исключения для ошибок шифрования</div><div class="ttdef"><b>Definition:</b> routecipher.h:22</div></div>
+<div class="ttc" id="aclassCipherException_html_a5467396312aca79874cb0b501186a499"><div class="ttname"><a href="classCipherException.html#a5467396312aca79874cb0b501186a499">CipherException::CipherException</a></div><div class="ttdeci">CipherException(const string &amp;msg)</div><div class="ttdoc">Конструктор с параметром</div><div class="ttdef"><b>Definition:</b> routecipher.h:30</div></div>
+<div class="ttc" id="aclassCipherException_html_af50f30579a8602d35824d1a2b946a184"><div class="ttname"><a href="classCipherException.html#af50f30579a8602d35824d1a2b946a184">CipherException::what</a></div><div class="ttdeci">const char * what() const noexcept override</div><div class="ttdoc">Получение сообщения об ошибке</div><div class="ttdef"><b>Definition:</b> routecipher.h:36</div></div>
+<div class="ttc" id="aclassTable_html"><div class="ttname"><a href="classTable.html">Table</a></div><div class="ttdoc">Шифр табличной маршрутной перестановки</div><div class="ttdef"><b>Definition:</b> routecipher.h:48</div></div>
+<div class="ttc" id="aclassTable_html_a39e90edb353837e30bcf77d09df3a03a"><div class="ttname"><a href="classTable.html#a39e90edb353837e30bcf77d09df3a03a">Table::decrypt</a></div><div class="ttdeci">wstring decrypt(const wstring &amp;cipher)</div><div class="ttdoc">Расшифровывание текста</div></div>
+<div class="ttc" id="aclassTable_html_a4cd90c67c976b6b5d6c96a7ffbfc563f"><div class="ttname"><a href="classTable.html#a4cd90c67c976b6b5d6c96a7ffbfc563f">Table::Table</a></div><div class="ttdeci">Table(int key)</div><div class="ttdoc">Конструктор с установкой ключа</div></div>
+<div class="ttc" id="aclassTable_html_a83ccfae4376b54eff71df87757bb16e6"><div class="ttname"><a href="classTable.html#a83ccfae4376b54eff71df87757bb16e6">Table::encrypt</a></div><div class="ttdeci">wstring encrypt(const wstring &amp;plain)</div><div class="ttdoc">Зашифровывание текста</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Создано системой&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+</small></address>
+</body>
+</html>
